@@ -1,0 +1,11 @@
+{
+	"hello": {
+		"world": "Hello World!"
+	},
+	"navBar": {
+		"home": "HOME",
+		"about": "ABOUT",
+		"businesses": "BUSINESSES",
+		"csr": "CSR"
+	}
+}
