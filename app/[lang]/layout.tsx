@@ -4,7 +4,7 @@ import { Locale, i18n } from '@/i18n.config'
 import '@/styles/globals.css'
 import type { Metadata } from 'next'
 import { Inter, Kantumruy_Pro } from 'next/font/google'
-import Image from 'next/image'
+import Image from 'next/legacy/image'
 
 const inter = Inter({ 
 	subsets: ['latin'],
@@ -50,7 +50,7 @@ export default function RootLayout({
 					{slides?.map((slide: any, index: number) => (
 						<div className="hidden duration-700 ease-in-out" data-carousel-item key={index}>
 							<Image src={slide.url} 
-							className="absolute block w-full -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt={index.toString()}  fill/>
+							className="absolute block w-full h-screen -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" alt={index.toString()} layout="fill"/>
 						</div>
 					))}
 				</Carousel>
