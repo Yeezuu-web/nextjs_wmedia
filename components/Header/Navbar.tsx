@@ -2,9 +2,9 @@ import { Fragment } from 'react';
 import NavbarItem from "./NavbarItem"
 import { siteSettings } from '@/settings/navigations';
 import { Locale } from '@/i18n.config';
-import { getDictionary } from '@/lib/dictionary';
-import Image from 'next/image';
-import Wmedia from '../../public/wmedia_logo.svg'
+import Image from "next/legacy/image";
+import Wmedia from '../../public/wmedia_logo.svg';
+import { ValidLocale, getTranslator } from '@/i18n';
 
 type Label = "home" | "about" | "businesses" | "csr"
 
@@ -13,31 +13,37 @@ interface Settings {
 	label: string
 }
 
-const Header = async ({lang}: {lang: Locale}) => {
-	const { navBar } = await getDictionary(lang);
+const Navbar = async ({lang}: {lang: Locale}) => {
+	const translate = await getTranslator(
+		`${lang}` as ValidLocale // our middleware ensures this is valid
+	  );
 	const { leftNav, rightNav } = siteSettings;
 	
 	const NavBarItemMap = ({settings}: { settings: Settings[]}) => (
 		<Fragment>
 			{settings.map(({ href, label }) => (
-				<NavbarItem href={href} label={navBar[label as Label]} key={href} />
+				<NavbarItem href={href} label={translate(`navBar.${label as Label}`)} key={href} />
 			))}
     	</Fragment>
 	)
 
+	
+
 	return (
-		<div className='absolute z-10 top-0 w-full h-20 hidden lg:flex items-center justify-between shrink-0 gap-20 lg:px-20 xl:px-44 2xl:gap-36 2xl:px-60 bg-black'>
-			<div className='w-full flex items-start justify-between'>
-				<NavBarItemMap settings={leftNav} />
-			</div>
-			<div className='w-44'>
-				<Image src={Wmedia} alt='logo' objectFit='true'/>
-			</div>
-			<div className='w-full flex items-start justify-between'>
-				<NavBarItemMap settings={rightNav} />
-			</div>
-		</div>
+		<header className='absolute z-10 top-0 w-full flex items-center justify-center bg-gray-900 text-white transition-transform duration-300 transform translate-y-0'>
+			<nav className='container h-20 hidden lg:flex items-center justify-between shrink-0 gap-16'>
+				<div className='w-full flex items-start justify-between'>
+					<NavBarItemMap settings={leftNav} />
+				</div>
+				<div className='w-44'>
+					<Image src={Wmedia} alt='logo' objectFit='cover'/>
+				</div>
+				<div className='w-full flex items-start justify-between'>
+					<NavBarItemMap settings={rightNav} />
+				</div>
+			</nav>
+		</header>
 	)
 }
 
-export default Header
+export default Navbar

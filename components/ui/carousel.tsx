@@ -1,42 +1,75 @@
 "use client"
 
-const Carousel = ({
-	children
-}: {
-	children: React.ReactNode
-}) => {
-  return (
-	<>
-		<div id="default-carousel" className="relative w-full" data-carousel="slide">
-			<div className="relative h-screen overflow-hidden rounded-lg md:h-96">
-				{children}
-			</div>
-			<div className="absolute z-30 flex space-x-3 -translate-x-1/2 bottom-5 left-1/2">
-				<button type="button" className="w-3 h-3 rounded-full" aria-current="true" aria-label="Slide 1" data-carousel-slide-to="0"></button>
-				<button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 2" data-carousel-slide-to="1"></button>
-				<button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 3" data-carousel-slide-to="2"></button>
-				<button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 4" data-carousel-slide-to="3"></button>
-				<button type="button" className="w-3 h-3 rounded-full" aria-current="false" aria-label="Slide 5" data-carousel-slide-to="4"></button>
-			</div>
-			<button type="button" className="absolute top-0 left-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-prev>
-				<span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-					<svg className="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-						<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 1 1 5l4 4"/>
-					</svg>
-					<span className="sr-only">Previous</span>
-				</span>
-			</button>
-			<button type="button" className="absolute top-0 right-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none" data-carousel-next>
-				<span className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/30 dark:bg-gray-800/30 group-hover:bg-white/50 dark:group-hover:bg-gray-800/60 group-focus:ring-4 group-focus:ring-white dark:group-focus:ring-gray-800/70 group-focus:outline-none">
-					<svg className="w-4 h-4 text-white dark:text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
-						<path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 9 4-4-4-4"/>
-					</svg>
-					<span className="sr-only">Next</span>
-				</span>
-			</button>
-		</div>
-	</>
-  )
+import { ChevronRight, ChevronLeft } from "lucide-react";
+import Image from "next/image";
+import { useRef } from "react";
+import Slider, { Settings } from "react-slick";
+
+interface SliderProps {
+	slides: string[]
 }
 
-export default Carousel
+interface SliderArrowProps {
+	type: "next" | "prev";
+	onClick: () => void;
+  }
+  
+  const SliderArrow = (props: SliderArrowProps) => {
+	const { type, ...rest } = props;
+  
+	return (
+	  <div {...rest} className={`absolute z-10 ${ type === 'next' ? 'right-5' : 'left-5'} rounded-full w-10 h-10 xl:w-14 xl:h-14 flex items-center justify-center cursor-pointer top-[50%] bg-white/5 hover:bg-white/10 overflow-x-hidden`} >
+		{type === "next" ? <ChevronRight className="w-7 h-7 text-white"/> : <ChevronLeft className="w-7 h-7 text-white"/>}
+	  </div>
+	);
+  };
+
+const SimpleSlider: React.FC<SliderProps> = ({ slides }) => {
+	const sliderRef = useRef<Slider>(null);
+	
+    const settings: Settings = {
+		arrows: true,
+		autoplay: true,
+		dots: true,
+		fade: true,
+		infinite: true,
+		autoplaySpeed: 6000,
+		slidesToShow: 1,
+		slidesToScroll: 1,
+		appendDots: dots => (
+			<div style={{
+				width: "auto",
+				borderRadius: "10px",
+				padding: "10px",
+				bottom: 5,
+				left: '75%'
+			  }}>
+				<ul> 
+					{dots}
+				</ul>
+			</div>
+		),
+		customPaging: (i: number) => (
+			<div className="w-2 h-2 xl:w-3 xl:h-3 -top-14 rounded-full bg-white/70 left-60">
+				{/* { i + 1 } */}
+			</div>
+		)  
+    };
+	
+	return (
+		<div className="w-full h-screen">
+		<SliderArrow type="prev" onClick={() => sliderRef.current?.slickPrev()}/>
+		<Slider {...settings} ref={sliderRef} >
+			{slides.map((slide, index) => (
+				<div key={index} className="relative w-full h-screen">
+					<Image className="object-cover" src={slide} alt="carousel" fill sizes="100%" quality={100}/>
+				</div>
+			))}
+		</Slider>
+		<SliderArrow type="next" onClick={() => sliderRef.current?.slickPrev()}/>
+		</div>
+	);
+}
+
+
+export default SimpleSlider

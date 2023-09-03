@@ -6,6 +6,10 @@
 		"home": "HOME",
 		"about": "ABOUT",
 		"businesses": "BUSINESSES",
-		"csr": "CSR"
+		"csr": "CSR",
+		"investors": "INVESTORE",
+		"news": "NEWS",
+		"careers": "CAREER",
+		"contact": "CONTACT"
 	}
 }

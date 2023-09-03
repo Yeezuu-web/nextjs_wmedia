@@ -11,6 +11,11 @@ body,
   box-sizing: border-box;
 }
 
+li.slick-active > div {
+	transition: all ease-out 0.5s;
+	transform: scale(1.3);
+	background-color: #e91f19;
+}
 
 @layer base {
   :root {

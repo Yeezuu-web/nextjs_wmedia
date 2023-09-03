@@ -4,7 +4,7 @@ const NavbarItem = ({href, label}: { href: string, label: string}) => {
 	return (
 		<Link
 		  href={href}
-		  className="flex items-center text-white text-center font-bold text-base xl:text-xl shrink-0"
+		  className="flex items-center text-white text-center font-semibold text-base xl:text-lg shrink-0"
 		>
 		  <span>{label}</span>
 		</Link>

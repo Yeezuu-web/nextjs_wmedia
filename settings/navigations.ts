@@ -19,20 +19,20 @@ export const siteSettings = {
   ],
   rightNav: [
     {
-      href: '/home',
-      label: 'home',
+      href: '/investors',
+      label: 'investors',
     },
     {
-      href: '/about',
-      label: 'about',
+      href: '/news',
+      label: 'news',
     },
     {
-      href: '/businesses',
-      label: 'businesses',
+      href: '/careers',
+      label: 'careers',
     },
     {
-      href: '/csr',
-      label: 'csr',
+      href: '/contact',
+      label: 'contact',
     },
   ],
 };
